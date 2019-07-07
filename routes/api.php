@@ -18,3 +18,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('findUsers', 'UserController@findAll');
+
+Route::get('findNotes', 'NoteController@findAll');
