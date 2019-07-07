@@ -12,17 +12,16 @@ class UserController extends Controller
         $users = User::all();
         return UserResource::collection($users);
     }
-
     public function findById($id)
     {
         $user = User::findOrFail($id);
-        return UserResource::collection($user);
+        return new UserResource($user);
     }
 
     public function update(Request $request, $id){
         User::whereId($id)->update($request);
     }
-
+    
     public function delete($id){
         $user = User::findOrFail($id);
         $user->delete();

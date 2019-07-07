@@ -18,5 +18,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('findUsers', 'UserController@findAll');
+Route::get('findUser/{id}', 'UserController@findById');
+Route::delete('delete/{id}', 'UserController@delete');
+Route::post('create', 'UserController@create');
+Route::post('update/{id}', 'UserController@update');
+
 
 Route::get('findNotes', 'NoteController@findAll');
+Route::get('findNote/{id}', 'NoteController@findById');
+Route::delete('delete/{id}', 'NoteController@delete');
+Route::post('create', 'NoteController@create');
+Route::post('update/{id}', 'NoteController@update');
+

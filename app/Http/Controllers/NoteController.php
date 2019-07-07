@@ -16,7 +16,7 @@ class NoteController extends Controller
     public function findById($id)
     {
         $note = Note::findOrFail($id);
-        return NoteResource::$note;
+        return new NoteResource($note);
     }
 
     public function update(Request $request, $id){
