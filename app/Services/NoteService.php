@@ -30,7 +30,8 @@ class NoteService
         $note -> delete();
     }
     
-    public function create($noteSpec, $loggedUser){
+    public function create($noteSpec, $loggedUser)
+    {
         $note = new Note;
 
         $validator = Validator::make($noteSpec->all(), [ 
@@ -52,6 +53,22 @@ class NoteService
         $note->save();
 
         return $note;
-        
+    }
+
+    public function findByDate($loggedUser, $currentAlbum, $date)
+    {
+        $userNotes = $loggedUser['notes'];
+
+        $notes = $userNotes->filter(function ($item) {
+            return $date->date;
+        })->values();
+
+        foreach($notes as $note){
+            $note->files = $note->files->filter(function($item){
+                return $album->currentAlbum;
+            })->vakues();
+        }
+
+        return $notes;
     }
 }

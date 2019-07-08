@@ -46,7 +46,7 @@ class NoteController extends Controller
     public function create(Request $request)
     {
         $loggedUser = $this->userService->findById($request['userId']);
-        
+
         $response = $this->noteService->create($request, $loggedUser);
 
         if($response instanceof Validator){
@@ -54,5 +54,14 @@ class NoteController extends Controller
         }
 
         return $response;
+    }
+
+    public function findByDate(Request $request, $currentAlbum){
+
+        $loggedUser = $this->userService->findById($request['userId']);
+        
+        $notes = $this->noteService->findByDate($loggedUser, $currentAlbum, $request['date']);
+
+        return NoteResource::collection($notes);
     }
 }

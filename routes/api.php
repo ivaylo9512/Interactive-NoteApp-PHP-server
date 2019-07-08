@@ -25,6 +25,8 @@ Route::middleware('auth:api') ->group (function(){
     });
 
     Route::prefix('notes')->group(function () {
+        Route::get('findByDate/{currentAlbum}', 'NoteController@findByDate');
+
         Route::get('findById/{id}', 'NoteController@findById');
         Route::post('create', 'NoteController@create');
 
