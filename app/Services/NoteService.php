@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Note;
 use App\Http\Resources\NoteResource as NoteResource;
 use Validator;
+use Carbon;
 
 class NoteService
 {
@@ -41,9 +42,12 @@ class NoteService
             return $validator;
         }
 
+        $date = Carbon::now()->format('Y-m-d');
+
         $note->name = $noteSpec->name;
         $note->note = $noteSpec->note;
         $note->owner = $loggedUser['id'];
+        $note->date = $date;
 
         $note->save();
 
