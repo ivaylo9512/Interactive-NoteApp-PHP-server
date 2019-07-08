@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Http\Resources\UserResource as UserResource;
 use Illuminate\Support\Facades\Auth;
+use Lcobucci\JWT\Parser;
 use Validator;
 
 class UserController extends Controller
@@ -41,6 +42,7 @@ class UserController extends Controller
             return response()->json(['error'=>'Bad creditentials.'], 401); 
         } 
     }
+
     public function register(Request $request) 
     { 
         $validator = Validator::make($request->all(), [ 
@@ -62,5 +64,12 @@ class UserController extends Controller
         $success['token'] =  $user->createToken('app')-> accessToken; 
         $success['username'] =  $user->username;
         return response()->json(['success'=>$success], 200); 
+    }
+
+    public function logout(Request $request){
+        $value = $request->bearerToken();
+        $id = (new Parser())->parse($value)->getHeader('jti');
+        $token = $request->user()->tokens->find($id);
+        $token->revoke();
     }
 }
