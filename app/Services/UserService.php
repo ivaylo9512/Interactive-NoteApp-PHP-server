@@ -9,9 +9,27 @@ use Lcobucci\JWT\Parser;
 
 class UserService
 {
-    public function findAll()
+    public function findAll($state)
     {
-        return User::all();
+        if (!$state) {
+            $state = "";
+        }
+        $users;
+        switch ($state) {
+            case "active":
+                $users = User::where('state', '=', true)->get();
+                break;
+            case "blocked":
+                $users = User::where('state', '=', false)->get();
+
+                break;
+            case "all":
+                $users = User::all();
+                break;
+            default:
+                throw new InvalidStateException("\"" + state + "\" is not a valid user state. Use \"active\" , \"blocked\" or \"all\".");
+        }
+        return $users;
     }
 
     public function findById($id)

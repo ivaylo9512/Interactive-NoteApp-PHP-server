@@ -17,9 +17,9 @@ class UserController extends Controller
         $this->userService = $userService;
     }
 
-    public function findAll()
+    public function findAll($state)
     {
-        $users = $this->userService->findAll();
+        $users = $this->userService->findAll($state);
         return UserResource::collection($users);
     }
     
