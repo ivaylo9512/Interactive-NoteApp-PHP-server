@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use Lcobucci\JWT\Parser;
+use App\Exceptions\InvalidStateException;
 
 class UserService
 {
@@ -27,7 +28,7 @@ class UserService
                 $users = User::all();
                 break;
             default:
-                throw new InvalidStateException("\"" + state + "\" is not a valid user state. Use \"active\" , \"blocked\" or \"all\".");
+                throw new InvalidStateException(''.$state.' is an invalid state.');
         }
         return $users;
     }

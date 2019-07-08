@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Auth\AuthenticationException;
+use App\Exceptions\InvalidStateException;
 
 class Handler extends ExceptionHandler
 {
@@ -52,11 +53,14 @@ class Handler extends ExceptionHandler
         if($exception instanceof ModelNotFoundException){
             return response()->json([ 'message' => ''.str_replace('App\\', '', $exception->getModel()).' not found.'], 404);
         }
-        
+
         if($exception instanceof AuthenticationException){
             return response()->json(['error' => "Unauthorized"], 401);
         }
 
+        if($exception instanceof InvalidStateException){
+            return response()->json(['error' => "Invalid state."], 400);
+        }
         return parent::render($request, $exception);
     }
 }

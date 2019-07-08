@@ -38,7 +38,7 @@ Route::middleware('auth:api') ->group (function(){
     Route::middleware('JwtRole')->group(function () {
         Route::get('findAll/{state}', 'NoteController@findAll');
         Route::get('findAll', 'UserController@findAll');
-        Route::post('register/admin', 'UserController@register');
+        Route::post('register/admin', 'UserController@registerAdmin');
 
     });
 });
