@@ -3,30 +3,29 @@
 namespace App\Services;
 
 use App\User;
-use App\Http\Resources\UserResource as UserResource;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use Lcobucci\JWT\Parser;
 
-class UserService{
-
+class UserService
+{
     public function findAll()
     {
-        $users = User::all();
-        return $users;
+        return User::all();
     }
+
     public function findById($id)
     {
         
-        $user = User::findOrFail($id);
-
-        return new UserResource($user);
+        return User::findOrFail($id);
     }
+
     public function delete($id)
     {
         $user = User::findOrFail($id);
         $user->delete();
     }
+
     public function login(){
         if(Auth::attempt(['username' => request('username'), 'password' => request('password')])){ 
             $user = Auth::user(); 
@@ -56,6 +55,7 @@ class UserService{
         $success['username'] =  $user->username;
         return $success;   
     }
+    
     public function logout($request){
         $value = $request->bearerToken();
         $id = (new Parser())->parse($value)->getHeader('jti');
