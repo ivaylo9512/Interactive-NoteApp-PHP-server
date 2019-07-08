@@ -32,7 +32,7 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        User::whereId($id)->update($request);
+        return $this->userService->update($request);
     }
     
     public function delete($id)
@@ -59,6 +59,7 @@ class UserController extends Controller
 
         return response()->json(['success'=>$response], 200);
     }
+
     public function registerAdmin(Request $request) 
     { 
         $response = $this->userService->register($request, "ROLE_ADMIN");
@@ -69,6 +70,7 @@ class UserController extends Controller
 
         return response()->json(['success'=>$response], 200);
     }
+
     public function logout(Request $request)
     {
         $this->userService->logout($request);

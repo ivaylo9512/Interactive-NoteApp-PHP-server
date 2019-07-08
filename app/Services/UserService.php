@@ -45,7 +45,8 @@ class UserService
         $user->delete();
     }
 
-    public function login(){
+    public function login()
+    {
         if(Auth::attempt(['username' => request('username'), 'password' => request('password')])){ 
             $user = Auth::user(); 
             $success['token'] =  $user->createToken('app')-> accessToken; 
@@ -53,7 +54,8 @@ class UserService
         } 
     }
     
-    public function register($userSpec, $role){
+    public function register($userSpec, $role)
+    {
         $validator = Validator::make($userSpec->all(), [ 
             'username' => 'required|unique:users', 
             'email' => 'required|unique:users|email', 
@@ -75,10 +77,22 @@ class UserService
         return $success;   
     }
     
-    public function logout($request){
+    public function logout($request)
+    {
         $value = $request->bearerToken();
         $id = (new Parser())->parse($value)->getHeader('jti');
         $token = $request->user()->tokens->find($id);
         $token->revoke();
+    }
+
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        foreach($request-> all() AS $key => $value){
+            $user->{$key} = $value;
+        }
+        $user -> save();
+        
+        return $user;
     }
 }
