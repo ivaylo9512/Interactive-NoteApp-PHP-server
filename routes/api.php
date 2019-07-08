@@ -18,13 +18,13 @@ Route::post('login', 'UserController@login');
 Route::post('register', 'UserController@register');
 
 Route::middleware('auth:api') ->group (function(){
-    Route::namespace('users')->group(function () {
+    Route::prefix('users')->group(function () {
         Route::post('logout', 'UserController@logout');    
         Route::delete('delete/{id}', 'UserController@delete');
         Route::post('update/{id}', 'UserController@update');
     });
 
-    Route::namespace('notes')->group(function () {
+    Route::prefix('notes')->group(function () {
         Route::get('findById/{id}', 'NoteController@findById');
         Route::delete('delete/{id}', 'NoteController@delete');
         Route::post('create', 'NoteController@create');
@@ -37,6 +37,6 @@ Route::middleware('auth:api') ->group (function(){
     });
 });
 
-Route::namespace('users')->group(function () {
+Route::prefix('users')->group(function () {
     Route::get('findById/{id}', 'UserController@findById');
 });
