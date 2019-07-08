@@ -35,7 +35,7 @@ class NoteController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->noteService->update($request, $id);
+       return $this->noteService->update($request, $id);
     }
 
     public function delete($id)

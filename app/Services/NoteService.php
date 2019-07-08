@@ -21,7 +21,13 @@ class NoteService
  
     public function update($noteSpec, $id)
     {
-        Note::whereId($id)->update($noteSpec);
+        $note = Note::findOrFail($id);
+        foreach($noteSpec-> all() AS $key => $value){
+            $note->{$key} = $value;
+        }
+        $note -> save();
+
+        return $note;
     }
 
     public function delete($id)
