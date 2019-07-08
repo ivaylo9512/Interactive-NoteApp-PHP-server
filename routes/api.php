@@ -15,9 +15,9 @@ use Illuminate\Http\Request;
 
 
 Route::middleware('auth:api') ->group (function(){
+    Route::post('logout', 'UserController@logout');    
 
     Route::middleware('JwtRole')->group(function () {
-        Route::post('logout', 'UserController@logout');    
     });
     
 });
@@ -36,5 +36,5 @@ Route::get('findNotes', 'NoteController@findAll');
 Route::get('findNote/{id}', 'NoteController@findById');
 Route::delete('delete/{id}', 'NoteController@delete');
 Route::post('create', 'NoteController@create');
-Route::post('update/{id}', 'NoteController@update');
+Route::post('notes/update/{id}', 'NoteController@update');
 

@@ -5,71 +5,63 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Http\Resources\UserResource as UserResource;
-use Illuminate\Support\Facades\Auth;
-use Lcobucci\JWT\Parser;
-use Validator;
+use App\Services\UserService as UserService;
+use Illuminate\Validation\Validator;
 
 class UserController extends Controller
 {
+    private $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     public function findAll()
     {
-        $users = User::all();
+        $users = $this->userService->findAll();
         return UserResource::collection($users);
     }
+    
     public function findById($id)
     {
-        $user = User::findOrFail($id);
+        $user = $this->userService->findById($id);
 
         return new UserResource($user);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         User::whereId($id)->update($request);
     }
     
-    public function delete($id){
-        $user = User::findOrFail($id);
-        $user->delete();
+    public function delete($id)
+    {
+        $this->userService->delete($id);
     }
 
-    public function login(){ 
-        if(Auth::attempt(['username' => request('username'), 'password' => request('password')])){ 
-            $user = Auth::user(); 
-            $success['token'] =  $user->createToken('app')-> accessToken; 
-            return response()->json(['success' => $success], 200); 
-        } 
-        else{     
-            return response()->json(['error'=>'Bad creditentials.'], 401); 
-        } 
+    public function login(Request $request)
+    { 
+        $success = $this->userService->login();
+        if($success){
+            return response()->json(['success' => $success], 200);
+        }
+        return response()->json(['error'=>'Bad creditentials.'], 401); 
     }
 
     public function register(Request $request) 
     { 
-        $validator = Validator::make($request->all(), [ 
-            'username' => 'required|unique:users', 
-            'email' => 'required|unique:users|email', 
-            'password' => 'required', 
-            'c_password' => 'required|same:password', 
-        ]);
-        
-        if ($validator->fails()) { 
-            return response()->json(['error'=>$validator->errors()], 401);            
-        }
+        $response = $this->userService->register($request);
 
-        $userInput = $request->all(); 
+        if($response instanceof Validator){
+            return response()->json(['error'=>$response->errors()], 401);  
+        } 
 
-        $userInput['password'] = bcrypt($userInput['password']); 
-        $user = User::create($userInput); 
-
-        $success['token'] =  $user->createToken('app')-> accessToken; 
-        $success['username'] =  $user->username;
-        return response()->json(['success'=>$success], 200); 
+        return response()->json(['success'=>$response], 200);
     }
 
-    public function logout(Request $request){
-        $value = $request->bearerToken();
-        $id = (new Parser())->parse($value)->getHeader('jti');
-        $token = $request->user()->tokens->find($id);
-        $token->revoke();
+    public function logout(Request $request)
+    {
+        $this->userService->logout($request);
     }
 }
