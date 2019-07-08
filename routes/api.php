@@ -14,27 +14,29 @@ use Illuminate\Http\Request;
 */
 
 
-Route::middleware('auth:api') ->group (function(){
-    Route::post('logout', 'UserController@logout');    
-
-    Route::middleware('JwtRole')->group(function () {
-    });
-    
-});
-
 Route::post('login', 'UserController@login');
 Route::post('register', 'UserController@register');
 
-Route::get('findUsers', 'UserController@findAll');
-Route::get('findUser/{id}', 'UserController@findById');
-Route::delete('delete/{id}', 'UserController@delete');
-Route::post('create', 'UserController@create');
-Route::post('update/{id}', 'UserController@update');
+Route::middleware('auth:api') ->group (function(){
+    Route::namespace('users')->group(function () {
+        Route::post('logout', 'UserController@logout');    
+        Route::delete('delete/{id}', 'UserController@delete');
+        Route::post('update/{id}', 'UserController@update');
+    });
 
+    Route::namespace('notes')->group(function () {
+        Route::get('findById/{id}', 'NoteController@findById');
+        Route::delete('delete/{id}', 'NoteController@delete');
+        Route::post('create', 'NoteController@create');
+        Route::post('update/{id}', 'NoteController@update');
+    });
 
-Route::get('findNotes', 'NoteController@findAll');
-Route::get('findNote/{id}', 'NoteController@findById');
-Route::delete('delete/{id}', 'NoteController@delete');
-Route::post('create', 'NoteController@create');
-Route::post('notes/update/{id}', 'NoteController@update');
+    Route::middleware('JwtRole')->group(function () {
+        Route::get('findAll', 'NoteController@findAll');
+        Route::get('findAll', 'UserController@findAll');
+    });
+});
 
+Route::namespace('users')->group(function () {
+    Route::get('findById/{id}', 'UserController@findById');
+});
