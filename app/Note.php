@@ -9,7 +9,8 @@ class Note extends Model
 {
     protected $table = 'notes';
     protected $primaryKey = 'id';
- 
+    public $timestamps = false;
+    
     public function user()
     {
         return $this->belongsTo(User::class, 'id');

@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Note;
+use App\Http\Resources\NoteResource as NoteResource;
+use Validator;
 
 class NoteService
 {
@@ -25,5 +27,27 @@ class NoteService
     {
         $note = Note::findOrFail($id);
         $note -> delete();
+    }
+    
+    public function create($noteSpec, $loggedUser){
+        $note = new Note;
+
+        $validator = Validator::make($noteSpec->all(), [ 
+            'name' => 'required', 
+            'note' => 'required' 
+        ]);
+
+        if ($validator->fails()) {           
+            return $validator;
+        }
+
+        $note->name = $noteSpec->name;
+        $note->note = $noteSpec->note;
+        $note->owner = $loggedUser['id'];
+
+        $note->save();
+
+        return $note;
+        
     }
 }

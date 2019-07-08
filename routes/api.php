@@ -26,6 +26,8 @@ Route::middleware('auth:api') ->group (function(){
 
     Route::prefix('notes')->group(function () {
         Route::get('findById/{id}', 'NoteController@findById');
+        Route::post('create', 'NoteController@create');
+
         Route::delete('delete/{id}', 'NoteController@delete');
         Route::post('create', 'NoteController@create');
         Route::post('update/{id}', 'NoteController@update');

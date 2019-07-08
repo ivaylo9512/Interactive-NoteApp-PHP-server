@@ -6,13 +6,17 @@ use Illuminate\Http\Request;
 use App\Note;
 use App\Http\Resources\NoteResource as NoteResource;
 use App\Services\NoteService;
+use App\Services\UserService;
+use Illuminate\Validation\Validator;
 
 class NoteController extends Controller
 {
     private $noteService;
+    private $userService;
 
-    public function __construct(NoteService $noteService){
+    public function __construct(NoteService $noteService, UserService $userService){
         $this->noteService = $noteService;
+        $this->userService = $userService;
 
     } 
     public function findAll()
@@ -37,5 +41,18 @@ class NoteController extends Controller
     public function delete($id)
     {
         $this->noteService->delete($id);
+    }
+    
+    public function create(Request $request)
+    {
+        $loggedUser = $this->userService->findById($request['userId']);
+        
+        $response = $this->noteService->create($request, $loggedUser);
+
+        if($response instanceof Validator){
+            return response()->json(['error'=>$response->errors()], 401); 
+        }
+
+        return $response;
     }
 }
