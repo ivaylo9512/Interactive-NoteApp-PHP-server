@@ -52,7 +52,7 @@ class UserService
         } 
     }
     
-    public function register($userSpec){
+    public function register($userSpec, $role){
         $validator = Validator::make($userSpec->all(), [ 
             'username' => 'required|unique:users', 
             'email' => 'required|unique:users|email', 
@@ -65,7 +65,7 @@ class UserService
         }
 
         $userInput = $userSpec->all(); 
-
+        $userInput['role'] = $role; 
         $userInput['password'] = bcrypt($userInput['password']); 
         $user = User::create($userInput); 
 
