@@ -15,8 +15,11 @@ use Illuminate\Http\Request;
 
 
 Route::middleware('auth:api') ->group (function(){
-    Route::post('logout', 'UserController@logout');
 
+    Route::middleware('JwtRole')->group(function () {
+        Route::post('logout', 'UserController@logout');    
+    });
+    
 });
 
 Route::post('login', 'UserController@login');
