@@ -55,11 +55,11 @@ class Handler extends ExceptionHandler
         }
 
         if($exception instanceof AuthenticationException){
-            return response()->json(['error' => "Unauthorized"], 401);
+            return response()->json(['message' => "Unauthorized"], 401);
         }
 
         if($exception instanceof InvalidStateException){
-            return response()->json(['error' => "Invalid state."], 400);
+            return response()->json(['message' => "Invalid state."], 400);
         }
         return parent::render($request, $exception);
     }

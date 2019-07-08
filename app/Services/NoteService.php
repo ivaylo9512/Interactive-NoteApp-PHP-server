@@ -6,6 +6,7 @@ use App\Note;
 use App\Http\Resources\NoteResource as NoteResource;
 use Validator;
 use Carbon;
+use Illuminate\Auth\AuthenticationException;
 
 class NoteService
 {
@@ -19,10 +20,16 @@ class NoteService
         return Note::findOrFail($id);
     }
  
-    public function update($noteSpec, $id)
+    public function update($request, $id)
     {
         $note = Note::findOrFail($id);
-        foreach($noteSpec-> all() AS $key => $value){
+        $loggedUser = $request->user();
+
+        if($loggedUser->id != $note->owner && $loggedUser->role != 'ROLE_ADMIN'){
+            throw new AuthenticationException('Unauthenticated.');
+        }
+
+        foreach($request-> except(["id", "owner", "date"]) AS $key => $value){
             $note->{$key} = $value;
         }
         $note -> save();

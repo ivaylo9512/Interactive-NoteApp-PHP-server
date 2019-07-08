@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 use Lcobucci\JWT\Parser;
 use App\Exceptions\InvalidStateException;
+use Illuminate\Auth\AuthenticationException;
 
 class UserService
 {
@@ -85,14 +86,20 @@ class UserService
         $token->revoke();
     }
 
-    public function update(Request $request, $id)
+    public function update($request, $id)
     {
         $user = User::findOrFail($id);
-        foreach($request-> all() AS $key => $value){
+        $loggedUser = $request->user();
+
+        if($loggedUser->id != $user->id && $loggedUser->role != 'ROLE_ADMIN'){
+            throw new AuthenticationException('Unauthenticated.');
+        }
+
+        foreach($request->except(["id"]) AS $key => $value){
             $user->{$key} = $value;
         }
+
         $user -> save();
-        
         return $user;
     }
 }
