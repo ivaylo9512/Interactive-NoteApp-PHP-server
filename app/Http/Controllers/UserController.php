@@ -34,11 +34,10 @@ class UserController extends Controller
     public function login(){ 
         if(Auth::attempt(['username' => request('username'), 'password' => request('password')])){ 
             $user = Auth::user(); 
-            $success['token'] =  $user->createToken('MyApp')-> accessToken; 
+            $success['token'] =  $user->createToken('app')-> accessToken; 
             return response()->json(['success' => $success], 200); 
         } 
-        else{ 
-            
+        else{     
             return response()->json(['error'=>'Bad creditentials.'], 401); 
         } 
     }
