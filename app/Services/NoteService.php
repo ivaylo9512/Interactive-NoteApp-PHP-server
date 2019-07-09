@@ -15,9 +15,15 @@ class NoteService
         return Note::all();
     }
 
-    public function findById($id)
+    public function findById($request, $id)
     {
-        return Note::findOrFail($id);
+        $note = Note::findOrFail($id);
+        $loggedUser = $request->user();
+
+        if($loggedUser->id != $note->owner && $loggedUser->role != 'ROLE_ADMIN'){
+            throw new AuthenticationException('Unauthenticated.');
+        }
+        return $note;
     }
  
     public function update($request, $id)

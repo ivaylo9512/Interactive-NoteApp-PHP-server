@@ -26,9 +26,9 @@ class NoteController extends Controller
         return NoteResource::collection($notes);
     }
     
-    public function findById($id)
+    public function findById(Request $request, $id)
     {
-        $note = $this->noteService->findById($id);
+        $note = $this->noteService->findById($request, $id);
 
         return new NoteResource($note);
     }
