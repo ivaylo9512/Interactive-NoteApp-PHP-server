@@ -43,9 +43,15 @@ class NoteService
         return $note;
     }
 
-    public function delete($id)
+    public function delete($request, $id)
     {
         $note = Note::findOrFail($id);
+        $loggedUser = $request->user();
+
+        if($loggedUser->id != $note->owner && $loggedUser->role != 'ROLE_ADMIN'){
+            throw new AuthenticationException('Unauthenticated.');
+        }
+
         $note -> delete();
     }
     
