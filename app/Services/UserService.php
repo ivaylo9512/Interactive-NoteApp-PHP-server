@@ -19,11 +19,10 @@ class UserService
         $users;
         switch ($state) {
             case "active":
-                $users = User::where('state', '=', true)->get();
+                $users = User::where('enabled', '=', true)->get();
                 break;
             case "blocked":
-                $users = User::where('state', '=', false)->get();
-
+                $users = User::where('enabled', '=', false)->get();
                 break;
             case "all":
                 $users = User::all();

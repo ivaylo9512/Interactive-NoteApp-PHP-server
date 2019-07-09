@@ -45,7 +45,7 @@ class NoteController extends Controller
     
     public function create(Request $request)
     {
-        $loggedUser = $this->userService->findById($request['userId']);
+        $loggedUser = $this->userService->findById($request->user()->id);
 
         $response = $this->noteService->create($request, $loggedUser);
 
@@ -58,7 +58,7 @@ class NoteController extends Controller
 
     public function findByDate(Request $request, $currentAlbum){
 
-        $loggedUser = $this->userService->findById($request['userId']);
+        $loggedUser = $request->user();
         
         $notes = $this->noteService->findByDate($loggedUser, $currentAlbum, $request['date']);
 
