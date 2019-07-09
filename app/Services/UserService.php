@@ -33,15 +33,27 @@ class UserService
         return $users;
     }
 
-    public function findById($id)
-    {
-        
-        return User::findOrFail($id);
-    }
-
-    public function delete($id)
+    public function findById($request, $id)
     {
         $user = User::findOrFail($id);
+        $loggedUser = $request->user();
+        
+        if($user->enabled == false && ($loggedUser == null || $loggedUser->role != "ROLE_ADMIN")){
+            throw new AuthenticationException('Unauthenticated.');
+        }
+
+        return $user;
+    }
+
+    public function delete($request, $id)
+    {
+        $user = User::findOrFail($id);
+        $loggedUser = $request->user();
+
+        if($loggedUser->id != $user->id && $loggedUser->role != "ROLE_ADMIN" ){
+            throw new AuthenticationException('Unauthenticated.');
+        }
+
         $user->delete();
     }
 

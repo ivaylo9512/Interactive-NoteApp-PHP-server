@@ -23,9 +23,9 @@ class UserController extends Controller
         return UserResource::collection($users);
     }
     
-    public function findById($id)
+    public function findById(Request $request, $id)
     {
-        $user = $this->userService->findById($id);
+        $user = $this->userService->findById($request, $id);
 
         return new UserResource($user);
     }
@@ -35,9 +35,9 @@ class UserController extends Controller
         return $this->userService->update($request, $id);
     }
     
-    public function delete($id)
+    public function delete(Request $request, $id)
     {
-        $this->userService->delete($id);
+        $this->userService->delete($request, $id);
     }
 
     public function login(Request $request)
