@@ -80,18 +80,18 @@ class NoteService
         return $note;
     }
 
-    public function findByDate($loggedUser, $currentAlbum, $date)
+    public function findByDate($request, $currentAlbum)
     {
-        $userNotes = $loggedUser['notes'];
+        $loggedUser = $request->user();
+        $userNotes = $loggedUser->notes;
 
-        $notes = $userNotes->filter(function ($item) {
-            return $date->date;
-        })->values();
+        $date = $request->date;
+        echo($date);
+
+        $notes = $userNotes->where('date', $date);
 
         foreach($notes as $note){
-            $note->files = $note->files->filter(function($item){
-                return $album->currentAlbum;
-            })->vakues();
+            $note->files = $note->files->where('album', $currentAlbum);
         }
 
         return $notes;

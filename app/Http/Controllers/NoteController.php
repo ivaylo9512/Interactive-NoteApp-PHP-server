@@ -7,7 +7,6 @@ use App\Note;
 use App\Http\Resources\NoteResource as NoteResource;
 use App\Services\NoteService;
 use App\Services\UserService;
-use Illuminate\Validation\Validator;
 
 class NoteController extends Controller
 {
@@ -58,9 +57,7 @@ class NoteController extends Controller
 
     public function findByDate(Request $request, $currentAlbum){
 
-        $loggedUser = $request->user();
-        
-        $notes = $this->noteService->findByDate($loggedUser, $currentAlbum, $request['date']);
+        $notes = $this->noteService->findByDate($request, $currentAlbum);
 
         return NoteResource::collection($notes);
     }
