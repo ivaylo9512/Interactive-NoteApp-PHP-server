@@ -19,8 +19,13 @@ class FileController extends Controller
 
     public function upload(Request $request)
     {
-        $name = upload();
+        $name = $this->fileService->upload($request);
 
         return response()->json(['url'=> $name], 200);
+    }
+
+    public function setProfilePicture(Request $request)
+    {
+        $name = $this->filesService->setProfilePicture($request);
     }
 }

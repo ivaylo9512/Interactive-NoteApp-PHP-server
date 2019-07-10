@@ -33,4 +33,17 @@ class FileService
         return $name;
     }
 
+    public function setProfilePicture($request)
+    {
+        $userId = $request->user()->id;
+        $user = User::findOrFail($id);
+
+        $upload = $request->file('photo');
+        $name = $userId.'_profile';
+        $path = $upload->move(public_path('/'), $name);
+
+        $user->profilePicture = $name;
+        $user->save();
+    }
+
 }
