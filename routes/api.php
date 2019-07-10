@@ -43,6 +43,8 @@ Route::middleware('auth:api') ->group (function(){
         Route::post('users/register/admin', 'UserController@registerAdmin');
 
     });
+
+    Route::post('upload', 'FileController@upload');
 });
 
 Route::prefix('users')->group(function () {

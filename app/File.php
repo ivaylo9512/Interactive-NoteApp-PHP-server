@@ -9,6 +9,7 @@ class File extends Model
 {
     protected $table = 'files';
     protected $primaryKey = 'id';
+    public $timestamps = false;
  
     public function note()
     {
