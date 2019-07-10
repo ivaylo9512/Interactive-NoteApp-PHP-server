@@ -28,4 +28,9 @@ class FileController extends Controller
     {
         $name = $this->filesService->setProfilePicture($request);
     }
+
+    public function changeAlbum(Request $request, $imageId, $album)
+    {
+        $this->fileService->changeAlbum($request, $imageId, $album);
+    }
 }

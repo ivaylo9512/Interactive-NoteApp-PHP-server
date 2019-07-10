@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\File;
+use App\User;
 use App\Http\Resources\FileResource as FileResource;
 use Validator;
 use Carbon;
@@ -44,6 +45,30 @@ class FileService
 
         $user->profilePicture = $name;
         $user->save();
+    }
+    
+    public function changeAlbum($request, $imageId, $album)
+    {
+        $userId = $request->user()->id;
+        
+        $file = File::findOrFail($id);
+
+        if($userId != $file->id){
+            throw new AuthenticationException('Unauthenticated.');
+        }
+
+        if($album == 0){
+            $file->left = "";
+            $file->width = "";
+            $file->top = "";
+            $file->place = null;
+        }
+
+        $file->alubm = $album;
+
+        $file->save();
+
+        return $file;
     }
 
 }
