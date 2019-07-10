@@ -71,4 +71,12 @@ class FileService
         return $file;
     }
 
+    public function findAlbumImages($request, $album)
+    {
+        $userId = $request->user()->id;
+        $images = $userNotes->where('album', $album)->where('owner', $userId)->get();;
+ 
+        return $images;
+    }
+
 }

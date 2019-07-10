@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\File;
 use Illuminate\Validation\Validator;
 use App\Services\FileService as FileService;
+use App\Http\Resources\FileResource as FileResource;
 
 
 class FileController extends Controller
@@ -32,5 +33,12 @@ class FileController extends Controller
     public function changeAlbum(Request $request, $imageId, $album)
     {
         $this->fileService->changeAlbum($request, $imageId, $album);
+    }
+
+    public function findAlbumImages(Request $request, $album)
+    {
+        $images = $this->fileService->findAlbumImages($request, $album);
+        
+        return FileResource::collection($images);
     }
 }
