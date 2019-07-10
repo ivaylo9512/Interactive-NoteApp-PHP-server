@@ -5,28 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\File;
 use Illuminate\Validation\Validator;
+use App\Services\FileService as FileService;
+
 
 class FileController extends Controller
 {
-    public function upload(Request $request){
-        $userId = $request->user()->id;
+    private $fileService;
 
+    function __construct(FileService $fileService)
+    {
+        $this->fileService = $fileService;
+    }
 
-        $upload = $request->file('photo');
-        $fileName = $upload->getClientOriginalName();
-        $name = $userId.'_'.pathinfo($fileName, PATHINFO_FILENAME);
-        $type = pathinfo($fileName, PATHINFO_EXTENSION);
-        $size = $upload->getSize();
-
-        $file = new File;
-        $file->owner = $userId;
-        $file->location = $name;
-        $file->type = $type;
-        $file->size = $size;
-
-        $file->save();
-
-        $path = $upload->move(public_path('/'), $name);
+    public function upload(Request $request)
+    {
+        $name = upload();
 
         return response()->json(['url'=> $name], 200);
     }
