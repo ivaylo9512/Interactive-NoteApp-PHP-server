@@ -38,7 +38,7 @@ class NoteService
         foreach($request-> except(["id", "owner", "date"]) AS $key => $value){
             $note->{$key} = $value;
         }
-        $note -> save();
+        $note->save();
 
         return $note;
     }
@@ -52,7 +52,7 @@ class NoteService
             throw new AuthenticationException('Unauthenticated.');
         }
 
-        $note -> delete();
+        $note->delete();
     }
     
     public function create($noteSpec, $loggedUser)

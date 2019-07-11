@@ -78,9 +78,9 @@ class FileService
         }
 
         if($album == 0){
-            $file->left_Position = "";
+            $file->left_position = "";
             $file->width = "";
-            $file->top_Position = "";
+            $file->top_position = "";
             $file->rotation = "";
             $file->place = null;
         }
@@ -92,9 +92,8 @@ class FileService
         return $file;
     }
 
-    public function findAlbumImages($request, $album)
+    public function findAlbumImages($userId, $album)
     {
-        $userId = $request->user()->id;
         $images = File::where('album', $album)->where('owner', $userId)->get();;
  
         return $images;
@@ -105,4 +104,31 @@ class FileService
         return File::where('owner', $userId)->get();
     }
 
+    public function exchangePhotos($userId, $oldPhoto, $newPhoto)
+    {
+        $oldPhoto = File::findOrFail($oldPhoto);
+        $newPhoto = File::findOrFail($newPhoto);
+
+        if($oldPhoto->owner != $userId || $newPhoto->owner != $userId){
+            throw new AuthenticationException('Unauthenticated.');
+        }
+
+        $newPhoto->album = $oldPhoto->album;
+        $newPhoto->width = $oldPhoto->width;
+        $newPhoto->top_position = $oldPhoto->top_position;
+        $newPhoto->left_position = $oldPhoto->left_position;
+        $newPhoto->rotation = $oldPhoto->rotation;
+        $newPhoto->place = $oldPhoto->place;
+
+        $oldPhoto->left_Position = "";
+        $oldPhoto->width = "";
+        $oldPhoto->top_Position = "";
+        $oldPhoto->rotation = "";
+        $oldPhoto->place = null;
+        $oldPhoto->album = 0;
+
+    
+        $oldPhoto->save();
+        $newPhoto->save();
+    }
 }

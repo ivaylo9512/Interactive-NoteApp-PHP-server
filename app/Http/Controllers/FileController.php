@@ -47,7 +47,8 @@ class FileController extends Controller
 
     public function findAlbumImages(Request $request, $album)
     {
-        $images = $this->fileService->findAlbumImages($request, $album);
+        
+        $images = $this->fileService->findAlbumImages($request->user()->id, $album);
         
         return FileResource::collection($images);
     }
@@ -57,6 +58,9 @@ class FileController extends Controller
         $images = $this->fileService->findUserImages($request->user()->id);
         
         return FileResource::collection($images);
-        
+    }
+    public function exchangePhotos(Request $request, $oldPhoto, $newPhoto){
+
+        $this->fileService->exchangePhotos($request->user()->id, $oldPhoto, $newPhoto);
     }
 }

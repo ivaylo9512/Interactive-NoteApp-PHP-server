@@ -49,6 +49,7 @@ Route::middleware('auth:api') ->group (function(){
     Route::patch('changeAlbum/{imageId}/{album}', 'FileController@changeAlbum');
     Route::post('findAlbumImages/{album}', 'FileController@findAlbumImages');
     Route::post('findUserImages', 'FileController@findUserImages');
+    Route::post('exchangePhotos/{oldPhoto}/{newPhoto}', 'FileController@exchangePhotos');
 });
 
 Route::prefix('users')->group(function () {
