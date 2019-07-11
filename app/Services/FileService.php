@@ -37,34 +37,37 @@ class FileService
     public function setProfilePicture($request)
     {
         $userId = $request->user()->id;
-        $user = User::findOrFail($id);
+        $user = User::findOrFail($userId);
 
         $upload = $request->file('photo');
         $name = $userId.'_profile';
         $path = $upload->move(public_path('/'), $name);
 
-        $user->profilePicture = $name;
+        $user->profile_picture = $name;
         $user->save();
+
+        return $name;
     }
     
     public function changeAlbum($request, $imageId, $album)
     {
         $userId = $request->user()->id;
         
-        $file = File::findOrFail($id);
+        $file = File::findOrFail($imageId);
 
-        if($userId != $file->id){
+        if($userId != $file->owner){
             throw new AuthenticationException('Unauthenticated.');
         }
 
         if($album == 0){
-            $file->left = "";
+            $file->left_Position = "";
             $file->width = "";
-            $file->top = "";
+            $file->top_Position = "";
+            $file->rotation = "";
             $file->place = null;
         }
 
-        $file->alubm = $album;
+        $file->album = $album;
 
         $file->save();
 
@@ -74,7 +77,7 @@ class FileService
     public function findAlbumImages($request, $album)
     {
         $userId = $request->user()->id;
-        $images = $userNotes->where('album', $album)->where('owner', $userId)->get();;
+        $images = File::where('album', $album)->where('owner', $userId)->get();;
  
         return $images;
     }

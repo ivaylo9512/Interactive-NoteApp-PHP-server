@@ -46,7 +46,7 @@ Route::middleware('auth:api') ->group (function(){
 
     Route::post('upload', 'FileController@upload');
     Route::post('setProfilePicture', 'FileController@setProfilePicture');
-    Route::post('changeAlbum/{imageId}/{album}', 'FileController@changeAlbum');
+    Route::patch('changeAlbum/{imageId}/{album}', 'FileController@changeAlbum');
     Route::post('findAlbumImages/{album}', 'FileController@findAlbumImages');
 });
 

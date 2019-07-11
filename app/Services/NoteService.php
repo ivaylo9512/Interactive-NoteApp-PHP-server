@@ -86,7 +86,6 @@ class NoteService
         $userNotes = $loggedUser->notes;
 
         $date = $request->date;
-        echo($date);
 
         $notes = $userNotes->where('date', $date);
 
