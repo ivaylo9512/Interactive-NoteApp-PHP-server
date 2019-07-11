@@ -59,8 +59,15 @@ class FileController extends Controller
         
         return FileResource::collection($images);
     }
-    public function exchangePhotos(Request $request, $oldPhoto, $newPhoto){
+
+    public function exchangePhotos(Request $request, $oldPhoto, $newPhoto)
+    {
 
         $this->fileService->exchangePhotos($request->user()->id, $oldPhoto, $newPhoto);
+    }
+
+    public function updateAlbumPhotos(Request $request){
+
+        $this->fileService->updateAlbumPhotos($request->photos);
     }
 }

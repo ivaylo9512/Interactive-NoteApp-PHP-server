@@ -109,7 +109,8 @@ class FileService
         $oldPhoto = File::findOrFail($oldPhoto);
         $newPhoto = File::findOrFail($newPhoto);
 
-        if($oldPhoto->owner != $userId || $newPhoto->owner != $userId){
+        if($oldPhoto->owner != $userId || $newPhoto->owner != $userId)
+        {
             throw new AuthenticationException('Unauthenticated.');
         }
 
@@ -120,15 +121,31 @@ class FileService
         $newPhoto->rotation = $oldPhoto->rotation;
         $newPhoto->place = $oldPhoto->place;
 
-        $oldPhoto->left_Position = "";
+        $oldPhoto->left_position = "";
         $oldPhoto->width = "";
-        $oldPhoto->top_Position = "";
+        $oldPhoto->top_position = "";
         $oldPhoto->rotation = "";
         $oldPhoto->place = null;
         $oldPhoto->album = 0;
 
-    
         $oldPhoto->save();
         $newPhoto->save();
+    }
+
+    public function updateAlbumPhotos($photos)
+    {
+        foreach($photos as $photoDetails)
+        {
+            $photoDetails = (object)$photoDetails;
+            $photo = File::findOrFail($photoDetails->id);
+
+            $photo->left_position = $photoDetails->left_position;
+            $photo->width = $photoDetails->width;
+            $photo->top_position = $photoDetails->top_position;
+            $photo->rotation = $photoDetails->rotation;
+            $photo->note = $photoDetails->note;
+
+            $photo->save();
+        }
     }
 }
