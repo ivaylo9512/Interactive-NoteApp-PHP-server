@@ -13,9 +13,18 @@ class FileService
 {
     public function upload($request)
     {
+        $upload = $request->file('photo');
         $userId = $request->user()->id;
 
-        $upload = $request->file('photo');
+        $validator = Validator::make($request->all(), [
+            'photo'=> 'required|image'
+        ]);
+
+        if ($validator->fails())
+        {
+            return $validator;
+        }
+
         $fileName = $upload->getClientOriginalName();
         $name = $userId.'_'.pathinfo($fileName, PATHINFO_FILENAME);
         $type = pathinfo($fileName, PATHINFO_EXTENSION);
@@ -36,6 +45,15 @@ class FileService
 
     public function setProfilePicture($request)
     {
+        $validator = Validator::make($request->all(), [
+            'photo'=> 'required|image'
+        ]);
+
+        if ($validator->fails())
+        {
+            return $validator;
+        }
+
         $userId = $request->user()->id;
         $user = User::findOrFail($userId);
 

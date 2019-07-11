@@ -20,16 +20,24 @@ class FileController extends Controller
 
     public function upload(Request $request)
     {
-        $name = $this->fileService->upload($request);
+        $response = $this->fileService->upload($request);
 
-        return response()->json(['url'=> $name], 200);
+        if($response instanceof Validator){
+            return response()->json(['message'=>$response->errors()],400);
+        }
+
+        return response()->json(['url'=> $response], 200);
     }
 
     public function setProfilePicture(Request $request)
     {
-        $name = $this->fileService->setProfilePicture($request);
-    
-        return response()->json(['url'=> $name], 200);
+        $response = $this->fileService->setProfilePicture($request);
+
+        if($response instanceof Validator){
+            return response()->json(['message'=>$response->errors()],400);
+        }
+        
+        return response()->json(['url'=> $response], 200);
     }
 
     public function changeAlbum(Request $request, $imageId, $album)
