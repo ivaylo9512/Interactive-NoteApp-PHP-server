@@ -8,6 +8,7 @@ use App\Http\Resources\FileResource as FileResource;
 use Validator;
 use Carbon;
 use Illuminate\Auth\AuthenticationException;
+use App\Exceptions\InvalidStateException;
 
 class FileService
 {
@@ -69,6 +70,10 @@ class FileService
     
     public function changeAlbum($request, $imageId, $album)
     {
+        if($album > 3 || $album < 0){
+            throw new InvalidException('Invalid album.');
+        }
+
         $userId = $request->user()->id;
         
         $file = File::findOrFail($imageId);
@@ -94,6 +99,10 @@ class FileService
 
     public function findAlbumImages($userId, $album)
     {
+        if($album > 3 || $album < 0){
+            throw new InvalidException('Invalid album.');
+        }
+        
         $images = File::where('album', $album)->where('owner', $userId)->get();;
  
         return $images;
