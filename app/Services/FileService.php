@@ -100,4 +100,9 @@ class FileService
         return $images;
     }
 
+    public function findUserImages($userId)
+    {
+        return File::where('owner', $userId)->get();
+    }
+
 }

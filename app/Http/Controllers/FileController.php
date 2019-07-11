@@ -51,4 +51,12 @@ class FileController extends Controller
         
         return FileResource::collection($images);
     }
+
+    public function findUserImages(Request $request)
+    {
+        $images = $this->fileService->findUserImages($request->user()->id);
+        
+        return FileResource::collection($images);
+        
+    }
 }

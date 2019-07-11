@@ -48,6 +48,7 @@ Route::middleware('auth:api') ->group (function(){
     Route::post('setProfilePicture', 'FileController@setProfilePicture');
     Route::patch('changeAlbum/{imageId}/{album}', 'FileController@changeAlbum');
     Route::post('findAlbumImages/{album}', 'FileController@findAlbumImages');
+    Route::post('findUserImages', 'FileController@findUserImages');
 });
 
 Route::prefix('users')->group(function () {
