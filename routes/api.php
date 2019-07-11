@@ -43,15 +43,15 @@ Route::middleware('auth:api') ->group (function(){
         Route::post('users/register/admin', 'UserController@registerAdmin');
 
     });
-
-    Route::post('upload', 'FileController@upload');
-    Route::post('setProfilePicture', 'FileController@setProfilePicture');
-    Route::patch('changeAlbum/{imageId}/{album}', 'FileController@changeAlbum');
-    Route::post('findAlbumImages/{album}', 'FileController@findAlbumImages');
-    Route::post('findUserImages', 'FileController@findUserImages');
-    Route::post('exchangePhotos/{oldPhoto}/{newPhoto}', 'FileController@exchangePhotos');
-    Route::post('updateAlbumPhotos', 'FileController@updateAlbumPhotos');
-
+    Route::prefix('notes')->group(function () {
+        Route::post('upload', 'FileController@upload');
+        Route::patch('setProfilePicture', 'FileController@setProfilePicture');
+        Route::patch('changeAlbum/{imageId}/{album}', 'FileController@changeAlbum');
+        Route::get('findAlbumImages/{album}', 'FileController@findAlbumImages');
+        Route::get('findUserImages', 'FileController@findUserImages');
+        Route::patch('exchangePhotos/{oldPhoto}/{newPhoto}', 'FileController@exchangePhotos');
+        Route::patch('updateAlbumPhotos', 'FileController@updateAlbumPhotos');
+    });
 });
 
 Route::prefix('users')->group(function () {
