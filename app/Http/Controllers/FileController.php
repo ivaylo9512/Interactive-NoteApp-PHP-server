@@ -50,7 +50,7 @@ class FileController extends Controller
         
         $images = $this->fileService->findAlbumImages($request->user()->id, $album);
         
-        return FileResource::collection($images);
+        return $images;
     }
 
     public function findUserImages(Request $request)
