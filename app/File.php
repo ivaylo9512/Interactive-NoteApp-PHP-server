@@ -13,6 +13,6 @@ class File extends Model
  
     public function note()
     {
-        return $this->belongsTo(Note::class, 'note');
+        return $this->belongsTo(Note::class, 'id');
     } 
 }

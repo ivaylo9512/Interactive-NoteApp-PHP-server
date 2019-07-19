@@ -63,7 +63,7 @@ class FileController extends Controller
     public function exchangePhotos(Request $request, $oldPhoto, $newPhoto)
     {
 
-        $this->fileService->exchangePhotos($request->user()->id, $oldPhoto, $newPhoto);
+        return $this->fileService->exchangePhotos($request->user()->id, $oldPhoto, $newPhoto);
     }
 
     public function updateAlbumPhotos(Request $request){

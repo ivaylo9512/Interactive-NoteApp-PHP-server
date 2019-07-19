@@ -73,7 +73,6 @@ class FileService
         if($album > 3 || $album < 0){
             throw new InvalidException('Invalid album.');
         }
-
         $userId = $request->user()->id;
         
         $file = File::findOrFail($imageId);
@@ -123,22 +122,27 @@ class FileService
             throw new AuthenticationException('Unauthenticated.');
         }
 
+        
         $newPhoto->album = $oldPhoto->album;
         $newPhoto->width = $oldPhoto->width;
-        $newPhoto->top_position = $oldPhoto->top_position;
-        $newPhoto->left_position = $oldPhoto->left_position;
+        $newPhoto->topPosition = $oldPhoto->topPosition;
+        $newPhoto->leftPosition = $oldPhoto->leftPosition;
         $newPhoto->rotation = $oldPhoto->rotation;
         $newPhoto->place = $oldPhoto->place;
+        $newPhoto->note = $oldPhoto->note;
 
-        $oldPhoto->left_position = "";
+        $oldPhoto->leftPosition = "";
         $oldPhoto->width = "";
-        $oldPhoto->top_position = "";
+        $oldPhoto->topPosition = "";
         $oldPhoto->rotation = "";
         $oldPhoto->place = null;
         $oldPhoto->album = 0;
+        $oldPhoto->note = null;
 
         $oldPhoto->save();
         $newPhoto->save();
+
+        return $newPhoto;
     }
 
     public function updateAlbumPhotos($photos)
