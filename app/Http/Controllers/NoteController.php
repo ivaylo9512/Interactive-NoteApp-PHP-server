@@ -7,6 +7,7 @@ use App\Note;
 use App\Http\Resources\NoteResource as NoteResource;
 use App\Services\NoteService;
 use App\Services\UserService;
+use Illuminate\Validation\Validator;
 
 class NoteController extends Controller
 {
@@ -44,7 +45,7 @@ class NoteController extends Controller
     
     public function create(Request $request)
     {
-        $loggedUser = $this->userService->findById($request->user()->id);
+        $loggedUser = $this->userService->findById($request, $request->user()->id);
 
         $response = $this->noteService->create($request, $loggedUser);
 
@@ -58,7 +59,7 @@ class NoteController extends Controller
     public function findByDate(Request $request, $currentAlbum){
 
         $notes = $this->noteService->findByDate($request, $currentAlbum);
-
-        return NoteResource::collection($notes);
+        
+        return response()->json(NoteResource::collection($notes));
     }
 }

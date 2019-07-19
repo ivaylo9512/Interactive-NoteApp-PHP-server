@@ -26,7 +26,7 @@ class FileController extends Controller
             return response()->json(['message'=>$response->errors()],400);
         }
 
-        return response()->json(['url'=> $response], 200);
+        return $response;
     }
 
     public function setProfilePicture(Request $request)

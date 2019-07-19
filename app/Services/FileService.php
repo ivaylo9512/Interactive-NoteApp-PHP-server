@@ -41,7 +41,7 @@ class FileService
 
         $path = $upload->move(public_path('/'), $name);
 
-        return $name;
+        return $file;
     }
 
     public function setProfilePicture($request)
@@ -103,7 +103,7 @@ class FileService
             throw new InvalidException('Invalid album.');
         }
         
-        $images = File::where('album', $album)->where('owner', $userId)->get();;
+        $images = File::where('album', $album)->where('owner', $userId)->get();
  
         return $images;
     }
