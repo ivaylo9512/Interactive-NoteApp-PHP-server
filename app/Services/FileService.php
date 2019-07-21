@@ -82,11 +82,12 @@ class FileService
         }
 
         if($album == 0){
-            $file->left_position = "";
+            $file->rightPosition = "";
             $file->width = "";
-            $file->top_position = "";
+            $file->bottomPosition = "";
             $file->rotation = "";
             $file->place = null;
+            $file->note = null;
         }
 
         $file->album = $album;
@@ -125,16 +126,16 @@ class FileService
         
         $newPhoto->album = $oldPhoto->album;
         $newPhoto->width = $oldPhoto->width;
-        $newPhoto->topPosition = $oldPhoto->topPosition;
-        $newPhoto->leftPosition = $oldPhoto->leftPosition;
+        $newPhoto->bottomPosition = $oldPhoto->bottomPosition;
+        $newPhoto->rightPosition = $oldPhoto->rightPosition;
         $newPhoto->rotation = $oldPhoto->rotation;
         $newPhoto->place = $oldPhoto->place;
         $newPhoto->note = $oldPhoto->note;
 
-        $oldPhoto->leftPosition = "";
-        $oldPhoto->width = "";
-        $oldPhoto->topPosition = "";
-        $oldPhoto->rotation = "";
+        $oldPhoto->rightPosition = null;
+        $oldPhoto->width = null;
+        $oldPhoto->bottomPosition = null;
+        $oldPhoto->rotation = null;
         $oldPhoto->place = null;
         $oldPhoto->album = 0;
         $oldPhoto->note = null;
@@ -152,9 +153,9 @@ class FileService
             $photoDetails = (object)$photoDetails;
             $photo = File::findOrFail($photoDetails->id);
 
-            $photo->left_position = $photoDetails->left_position;
+            $photo->rightPosition = $photoDetails->rightPosition;
             $photo->width = $photoDetails->width;
-            $photo->top_position = $photoDetails->top_position;
+            $photo->bottomPosition = $photoDetails->bottomPosition;
             $photo->rotation = $photoDetails->rotation;
             $photo->note = $photoDetails->note;
 
