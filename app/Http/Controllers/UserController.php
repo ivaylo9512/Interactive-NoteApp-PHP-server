@@ -44,7 +44,7 @@ class UserController extends Controller
     { 
         $success = $this->userService->login();
         if($success){
-            return response()->json(['success' => $success], 200);
+            return $success;
         }
         return response()->json(['error'=>'Bad creditentials.'], 401); 
     }

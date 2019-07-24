@@ -60,8 +60,9 @@ class UserService
     public function login()
     {
         if(Auth::attempt(['username' => request('username'), 'password' => request('password')])){ 
-            $user = Auth::user(); 
-            $success['token'] =  $user->createToken('app')-> accessToken; 
+            $user = Auth::user();
+            $user->token = $user->createToken('app')-> accessToken;
+            $success =  $user; 
             return $success;
         } 
     }

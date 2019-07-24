@@ -42,7 +42,7 @@ class FileController extends Controller
 
     public function changeAlbum(Request $request, $imageId, $album)
     {
-        $this->fileService->changeAlbum($request, $imageId, $album);
+        return $this->fileService->changeAlbum($request, $imageId, $album);
     }
 
     public function findAlbumImages(Request $request, $album)
