@@ -6,15 +6,18 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Http\Resources\UserResource as UserResource;
 use App\Services\UserService as UserService;
+use App\Services\FileService as FileService;
 use Illuminate\Validation\Validator;
 
 class UserController extends Controller
 {
     private $userService;
+    private $fileService;
 
-    public function __construct(UserService $userService)
+    public function __construct(UserService $userService, FileService $fileService)
     {
         $this->userService = $userService;
+        $this->fileService = $fileService;
     }
 
     public function findAll($state)
@@ -50,12 +53,15 @@ class UserController extends Controller
     }
 
     public function register(Request $request) 
-    { 
+    {
         $response = $this->userService->register($request, "ROLE_USER");
+
 
         if($response instanceof Validator){
             return response()->json(['error'=>$response->errors()], 401);  
         } 
+        
+        $this->fileService->setProfilePicture($request, $response);
 
         return response()->json(['success'=>$response], 200);
     }

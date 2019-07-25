@@ -12,10 +12,9 @@ use App\Exceptions\InvalidStateException;
 
 class FileService
 {
-    public function upload($request)
+    public function upload($request, $userId)
     {
         $upload = $request->file('photo');
-        $userId = $request->user()->id;
 
         $validator = Validator::make($request->all(), [
             'photo'=> 'required|image'
@@ -44,7 +43,7 @@ class FileService
         return $file;
     }
 
-    public function setProfilePicture($request)
+    public function setProfilePicture($request, $user)
     {
         $validator = Validator::make($request->all(), [
             'photo'=> 'required|image'
@@ -55,15 +54,14 @@ class FileService
             return $validator;
         }
 
-        $userId = $request->user()->id;
-        $user = User::findOrFail($userId);
+        $userId = $user->id;
 
         $upload = $request->file('photo');
         $name = $userId.'_profile';
         $path = $upload->move(public_path('/'), $name);
 
         $user->profile_picture = $name;
-        $user->save();
+        $user->save()->except('token');
 
         return $name;
     }

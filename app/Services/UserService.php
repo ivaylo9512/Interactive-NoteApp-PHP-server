@@ -69,25 +69,26 @@ class UserService
     
     public function register($userSpec, $role)
     {
-        $validator = Validator::make($userSpec->all(), [ 
+        $validator = Validator::make((json_decode($userSpec->user, true)), [ 
             'username' => 'required|unique:users', 
-            'email' => 'required|unique:users|email', 
             'password' => 'required', 
-            'repeat_password' => 'required|same:password', 
+            'repeatPassword' => 'required|same:password',
+            'firstName' => 'required',
+            'lastName' => 'required',
+            'age' => 'required'
         ]);
 
         if ($validator->fails()) {           
             return $validator;
         }
 
-        $userInput = $userSpec->all(); 
+        $userInput = json_decode($userSpec->user, true); 
         $userInput['role'] = $role; 
         $userInput['password'] = bcrypt($userInput['password']); 
         $user = User::create($userInput); 
 
-        $success['token'] =  $user->createToken('app')-> accessToken; 
-        $success['username'] =  $user->username;
-        return $success;   
+        $user->token =  $user->createToken('app')-> accessToken; 
+        return $user;   
     }
     
     public function logout($request)

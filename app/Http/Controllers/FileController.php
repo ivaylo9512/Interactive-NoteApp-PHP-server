@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\File;
+use App\User;
 use Illuminate\Validation\Validator;
 use App\Services\FileService as FileService;
 use App\Http\Resources\FileResource as FileResource;
@@ -20,7 +21,7 @@ class FileController extends Controller
 
     public function upload(Request $request)
     {
-        $response = $this->fileService->upload($request);
+        $response = $this->fileService->upload($request, $request->user()->id);
 
         if($response instanceof Validator){
             return response()->json(['message'=>$response->errors()],400);
@@ -31,7 +32,9 @@ class FileController extends Controller
 
     public function setProfilePicture(Request $request)
     {
-        $response = $this->fileService->setProfilePicture($request);
+        $user = User::findOrFail($request->id);
+
+        $response = $this->fileService->setProfilePicture($request, $user);
 
         if($response instanceof Validator){
             return response()->json(['message'=>$response->errors()],400);
