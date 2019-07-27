@@ -60,8 +60,10 @@ class FileService
         $name = $userId.'_profile';
         $path = $upload->move(public_path('/'), $name);
 
-        $user->profile_picture = $name;
-        $user->save()->except('token');
+        $user->profilePicture = $name;
+
+        unset($user->token);
+        $user->save();
 
         return $name;
     }

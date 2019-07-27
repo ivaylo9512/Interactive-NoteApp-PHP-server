@@ -87,7 +87,7 @@ class UserService
         $userInput['password'] = bcrypt($userInput['password']); 
         $user = User::create($userInput); 
 
-        $user->token =  $user->createToken('app')-> accessToken; 
+        $user->token = $user->createToken('app')-> accessToken; 
         return $user;   
     }
     

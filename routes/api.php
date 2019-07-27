@@ -43,9 +43,10 @@ Route::middleware('auth:api') ->group (function(){
         Route::post('users/register/admin', 'UserController@registerAdmin');
 
     });
+    
     Route::prefix('images')->group(function () {
         Route::post('upload', 'FileController@upload');
-        Route::patch('setProfilePicture', 'FileController@setProfilePicture');
+        Route::post('setProfilePicture', 'FileController@setProfilePicture');
         Route::patch('changeAlbum/{imageId}/{album}', 'FileController@changeAlbum');
         Route::get('findAlbumImages/{album}', 'FileController@findAlbumImages');
         Route::get('findUserImages', 'FileController@findUserImages');

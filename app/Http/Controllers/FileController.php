@@ -32,7 +32,7 @@ class FileController extends Controller
 
     public function setProfilePicture(Request $request)
     {
-        $user = User::findOrFail($request->id);
+        $user = User::findOrFail($request->user()->id);
 
         $response = $this->fileService->setProfilePicture($request, $user);
 
