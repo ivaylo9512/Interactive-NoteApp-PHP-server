@@ -70,7 +70,6 @@ class FileController extends Controller
     }
 
     public function updateAlbumPhotos(Request $request){
-
-        $this->fileService->updateAlbumPhotos($request->photos);
+        $this->fileService->updateAlbumPhotos($request->images);
     }
 }

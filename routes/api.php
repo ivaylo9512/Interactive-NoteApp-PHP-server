@@ -51,7 +51,7 @@ Route::middleware('auth:api') ->group (function(){
         Route::get('findAlbumImages/{album}', 'FileController@findAlbumImages');
         Route::get('findUserImages', 'FileController@findUserImages');
         Route::patch('exchangePhotos/{oldPhoto}/{newPhoto}', 'FileController@exchangePhotos');
-        Route::patch('updateAlbumPhotos', 'FileController@updateAlbumPhotos');
+        Route::post('updateAlbumPhotos', 'FileController@updateAlbumPhotos');
     });
 });
 
