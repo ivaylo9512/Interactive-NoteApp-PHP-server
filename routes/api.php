@@ -32,7 +32,7 @@ Route::middleware('auth:api') ->group (function(){
 
         Route::delete('delete/{id}', 'NoteController@delete');
         Route::post('create', 'NoteController@create');
-        Route::post('update/{id}', 'NoteController@update');
+        Route::patch('update', 'NoteController@update');
     });
 
     Route::middleware('JwtRole')->group(function () {
@@ -51,7 +51,7 @@ Route::middleware('auth:api') ->group (function(){
         Route::get('findAlbumImages/{album}', 'FileController@findAlbumImages');
         Route::get('findUserImages', 'FileController@findUserImages');
         Route::patch('exchangePhotos/{oldPhoto}/{newPhoto}', 'FileController@exchangePhotos');
-        Route::post('updateAlbumPhotos', 'FileController@updateAlbumPhotos');
+        Route::patch('updateAlbumPhotos', 'FileController@updateAlbumPhotos');
     });
 });
 

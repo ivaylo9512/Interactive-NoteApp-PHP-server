@@ -26,16 +26,15 @@ class NoteService
         return $note;
     }
  
-    public function update($request, $id)
+    public function update($request, $loggedUser)
     {
-        $note = Note::findOrFail($id);
-        $loggedUser = $request->user();
+        $note = Note::findOrFail($request->id);
 
         if($loggedUser->id != $note->owner && $loggedUser->role != 'ROLE_ADMIN'){
             throw new AuthenticationException('Unauthenticated.');
         }
 
-        foreach($request-> except(["id", "owner", "date"]) AS $key => $value){
+        foreach($request-> except(["id"]) AS $key => $value){
             $note->{$key} = $value;
         }
         $note->save();
