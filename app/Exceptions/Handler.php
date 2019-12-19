@@ -49,13 +49,12 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-
         if($exception instanceof ModelNotFoundException){
             return response()->json([ 'message' => ''.str_replace('App\\', '', $exception->getModel()).' not found.'], 404);
         }
 
         if($exception instanceof AuthenticationException){
-            return response()->json(['message' => "Unauthorized"], 401);
+            return response()->json(['message' => $exception->getMessage()], 401);
         }
 
         if($exception instanceof InvalidStateException){

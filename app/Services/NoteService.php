@@ -7,6 +7,8 @@ use App\Http\Resources\NoteResource as NoteResource;
 use Validator;
 use Carbon;
 use Illuminate\Auth\AuthenticationException;
+use App\Exceptions\InvalidInputException;
+
 
 class NoteService
 {
@@ -60,11 +62,10 @@ class NoteService
 
         $validator = Validator::make($noteSpec->all(), [ 
             'name' => 'required', 
-            'note' => 'required' 
         ]);
 
-        if ($validator->fails()) {           
-            return $validator;
+        if ($validator->fails()) {
+            throw new InvalidInputException('Note must have a name');
         }
 
         $date = Carbon::now()->format('Y-m-d');

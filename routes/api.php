@@ -26,18 +26,14 @@ Route::middleware('auth:api') ->group (function(){
 
     Route::prefix('notes')->group(function () {
         Route::get('findByDate/{currentAlbum}', 'NoteController@findByDate');
-
         Route::get('findById/{id}', 'NoteController@findById');
         Route::post('create', 'NoteController@create');
-
         Route::delete('delete/{id}', 'NoteController@delete');
-        Route::post('create', 'NoteController@create');
         Route::patch('update', 'NoteController@update');
     });
 
     Route::middleware('JwtRole')->group(function () {
         Route::get('users/admin/findById/{id}', 'UserController@findById');
-
         Route::get('notes/findAll', 'NoteController@findAll');
         Route::get('users/findAll/{state}', 'UserController@findAll');
         Route::post('users/register/admin', 'UserController@registerAdmin');

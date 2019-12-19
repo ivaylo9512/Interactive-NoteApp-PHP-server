@@ -45,11 +45,7 @@ class UserController extends Controller
 
     public function login(Request $request)
     { 
-        $success = $this->userService->login();
-        if($success){
-            return $success;
-        }
-        return response()->json(['error'=>'Bad creditentials.'], 401); 
+        return $this->userService->login();
     }
 
     public function register(Request $request) 

@@ -64,7 +64,8 @@ class UserService
             $user->token = $user->createToken('app')-> accessToken;
             $success =  $user; 
             return $success;
-        } 
+        }
+        throw new AuthenticationException('Bad credentials.');
     }
     
     public function register($userSpec, $role)

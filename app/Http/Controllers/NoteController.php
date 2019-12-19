@@ -47,13 +47,7 @@ class NoteController extends Controller
     {
         $loggedUser = $this->userService->findById($request, $request->user()->id);
 
-        $response = $this->noteService->create($request, $loggedUser);
-
-        if($response instanceof Validator){
-            return response()->json(['error'=>$response->errors()], 401); 
-        }
-
-        return $response;
+        return $this->noteService->create($request, $loggedUser);
     }
 
     public function findByDate(Request $request, $currentAlbum){
