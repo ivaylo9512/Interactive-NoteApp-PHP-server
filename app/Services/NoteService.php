@@ -60,6 +60,10 @@ class NoteService
     {
         $note = new Note;
 
+        $messages = array(
+            'name.required' => 'Name is required.'
+        );
+
         $validator = Validator::make($noteSpec->all(), [ 
             'name' => 'required', 
         ]);

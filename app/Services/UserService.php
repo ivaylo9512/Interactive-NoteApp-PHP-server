@@ -8,6 +8,7 @@ use Validator;
 use Lcobucci\JWT\Parser;
 use App\Exceptions\InvalidStateException;
 use Illuminate\Auth\AuthenticationException;
+use App\Exceptions\InvalidInputException;
 
 class UserService
 {
@@ -70,17 +71,29 @@ class UserService
     
     public function register($userSpec, $role)
     {
+
+        $messages = array(
+            'username.required' => 'Username is required.',
+            'username.unique' => 'Username is taken', 
+            'password.required' => 'Password is required', 
+            'repeat.required' => 'Passwords must match', 
+            'repeat.same' => 'Passwords must match',
+            'firstName.required' => 'First name is required.',
+            'lastName.required' => 'Last name is required.',
+            'age.required' => 'Age is required.',
+        );
+
         $validator = Validator::make((json_decode($userSpec->user, true)), [ 
             'username' => 'required|unique:users', 
             'password' => 'required', 
-            'repeatPassword' => 'required|same:password',
+            'repeat' => 'required|same:password',
             'firstName' => 'required',
             'lastName' => 'required',
             'age' => 'required'
-        ]);
+        ], $messages);
 
         if ($validator->fails()) {           
-            return $validator;
+            throw new InvalidInputException($validator->errors());
         }
 
         $userInput = json_decode($userSpec->user, true); 

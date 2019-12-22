@@ -60,6 +60,11 @@ class Handler extends ExceptionHandler
         if($exception instanceof InvalidStateException){
             return response()->json(['message' => $exception->getMessage()], 400);
         }
+
+        if($exception instanceof InvalidInputException){
+            return response()->json(['message' => $exception->getMessage()], 400);
+        }
+        
         return parent::render($request, $exception);
     }
 }

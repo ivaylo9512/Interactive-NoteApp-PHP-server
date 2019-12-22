@@ -51,11 +51,6 @@ class UserController extends Controller
     public function register(Request $request) 
     {
         $response = $this->userService->register($request, "ROLE_USER");
-
-
-        if($response instanceof Validator){
-            return response()->json(['error'=>$response->errors()], 401);  
-        } 
         
         $this->fileService->setProfilePicture($request, $response);
 
@@ -65,10 +60,6 @@ class UserController extends Controller
     public function registerAdmin(Request $request) 
     { 
         $response = $this->userService->register($request, "ROLE_ADMIN");
-
-        if($response instanceof Validator){
-            return response()->json(['error'=>$response->errors()], 401);  
-        } 
 
         return response()->json(['success'=>$response], 200);
     }
